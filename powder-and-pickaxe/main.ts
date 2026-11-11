@@ -6,10 +6,10 @@
  */
 
 import Phaser from 'phaser';
-import { DeepveinScene, SceneConfig } from '../../src/game/DeepveinScene';
-import { SoundEngine } from '../../src/audio/SoundEngine';
-import { NetworkManager, LobbyRoomInfo } from '../../src/net/NetworkManager';
-import { TeamId } from '../../src/game/Entities';
+import { DeepveinScene, SceneConfig } from './src/game/DeepveinScene';
+import { SoundEngine } from './src/audio/SoundEngine';
+import { NetworkManager, LobbyRoomInfo } from './src/net/NetworkManager';
+import { TeamId } from './src/game/Entities';
 
 class ExpeditionApp {
   private phaserGame: Phaser.Game | null = null;

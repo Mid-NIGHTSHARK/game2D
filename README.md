@@ -40,26 +40,23 @@ A tactical 2D subterranean extraction and sabotage game for 2 to 8 players, feat
 
 ## 🏗 Multi-Game Architecture
 
-Adding future games to this repository only requires:
-1. Creating a folder under `games/<game-slug>/` with an `index.html` and entry script.
-2. Adding Rollup input in `vite.config.ts`:
-   ```ts
-   input: {
-     main: resolve(__dirname, 'index.html'),
-     'powder-and-pickaxe': resolve(__dirname, 'games/powder-and-pickaxe/index.html'),
-     '<game-slug>': resolve(__dirname, 'games/<game-slug>/index.html')
-   }
-   ```
-3. Running `npm run build` generates:
-   - `dist/index.html` (The Arcade Hub)
-   - `dist/powder-and-pickaxe/index.html`
-   - `dist/<game-slug>/index.html`
+Every game in this repository is 100% self-contained in its own top-level directory (`/<game-slug>/`).
+The root of the repository houses the static Arcade Hub (`index.html`) which links directly to each game.
+
+To add future games to this repository:
+1. Create a top-level directory `/<new-game-slug>/` with its own `package.json`, `vite.config.ts`, `index.html`, and source files.
+2. In its `vite.config.ts`, set `base: '/game2D/<new-game-slug>/'`.
+3. Add a card to the Arcade Hub (`index.html`) linking to `./<new-game-slug>/`.
+4. In `.github/workflows/deploy.yml`, add a build step for the new game and copy its `dist` into `_site/<new-game-slug>`.
 
 ---
 
 ## 🚀 Development & Build
 
 ```bash
+# Enter the game directory
+cd powder-and-pickaxe
+
 # Install dependencies
 npm install
 
@@ -77,5 +74,5 @@ npm run preview
 
 ## 📜 License & Credits
 
-All code, procedural pixel art matrices, and WebAudio synthesizer scripts are dedicated to the public domain under [CC0 1.0 Universal](./CREDITS.md).
+All code, procedural pixel art matrices, and WebAudio synthesizer scripts are dedicated to the public domain under [CC0 1.0 Universal](./powder-and-pickaxe/CREDITS.md).
 

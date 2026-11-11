@@ -17,6 +17,6 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
   },
-  "include": ["src", "games", "vite.config.ts"]
+  "include": ["src", "main.ts", "vite.config.ts"]
 }
 
