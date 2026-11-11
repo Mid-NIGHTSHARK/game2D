@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+  <title>Rillkeepers | 2D Cooperative Environmental Adventure</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=JetBrains+Mono:wght@400;500;600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <script type="module" crossorigin src="/game2D/assets/rillkeepers-Dlfc_3im.js"></script>
+  <link rel="stylesheet" crossorigin href="/game2D/assets/rillkeepers-DPTbVYJR.css">
+</head>
+<body>
+  <!-- Canvas container for Phaser -->
+  <div id="game-container"></div>
+
+  <!-- UI Root Layer -->
+  <div id="ui-root">
+    <!-- Top HUD (Minimal & unobtrusive) -->
+    <header id="hud" class="hud hidden">
+      <div class="hud-left">
+        <a href="/game2D/" class="hud-arcade-btn" title="Back to Arcade Hub">&larr; Arcade</a>
+        <div class="hud-room-badge" id="hud-room-display">
+          <span class="hud-dot" id="hud-status-dot"></span>
+          <span id="hud-room-label">Offline</span>
+          <button id="hud-copy-btn" class="hud-icon-btn hidden" title="Copy Invite Link">🔗</button>
+        </div>
+      </div>
+      <div class="hud-center">
+        <div class="hud-objective" id="hud-objective">
+          <span class="objective-icon">💧</span>
+          <span class="objective-text" id="objective-text">Objective: Restore the Valley Waterwheel</span>
+        </div>
+      </div>
+      <div class="hud-right">
+        <div class="hud-players" id="hud-players-count">
+          <span class="player-icon">👥</span>
+          <span id="player-count-text">1/4</span>
+        </div>
+        <button id="hud-pause-btn" class="hud-btn" title="Pause Menu (ESC)">⚙️ Menu</button>
+      </div>
+    </header>
+
+    <!-- Contextual Interaction Prompt -->
+    <div id="interaction-prompt" class="interaction-prompt hidden">
+      <span class="prompt-key" id="prompt-key">E</span>
+      <span class="prompt-label" id="prompt-label">Operate Sluice Gate</span>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Title Menu Screen -->
+    <div id="title-screen" class="screen-overlay">
+      <div class="title-panel">
+        <div class="title-crest">🌊 ⚙️ 🌲</div>
+        <h1 class="game-title">RILLKEEPERS</h1>
+        <p class="game-tagline">Cooperative Waterworks Restoration</p>
+
+        <div class="title-actions">
+          <button id="btn-solo-play" class="menu-btn primary-btn">
+            <span class="btn-icon">🌾</span>
+            <span>Single Player (Practice Valley)</span>
+          </button>
+
+          <button id="btn-local-coop" class="menu-btn secondary-btn">
+            <span class="btn-icon">👥</span>
+            <span>Local 2-Player (WASD + Arrows)</span>
+          </button>
+
+          <button id="btn-create-room" class="menu-btn water-btn">
+            <span class="btn-icon">✨</span>
+            <span>Create Private World</span>
+          </button>
+
+          <button id="btn-join-room-dialog" class="menu-btn secondary-btn">
+            <span class="btn-icon">🔑</span>
+            <span>Join with Room Code</span>
+          </button>
+
+          <button id="btn-public-lobby" class="menu-btn secondary-btn">
+            <span class="btn-icon">🌐</span>
+            <span>Public Worlds Roadmap</span>
+          </button>
+
+          <div class="title-sub-row">
+            <button id="btn-settings" class="small-btn">Settings</button>
+            <button id="btn-credits" class="small-btn">Credits &amp; Licenses</button>
+          </div>
+        </div>
+
+        <div class="title-footer">
+          <span>v1.0 &bull; 1–4 Players &bull; WebRTC P2P (Trystero) &bull; WebAudio Synth</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Join Room Modal -->
+    <div id="join-modal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <h2>Join Waterworks Crew</h2>
+        <p class="modal-desc">Enter the invite link or Room ID and Secret Key provided by your valley host:</p>
+
+        <div class="code-input-group">
+          <label class="input-label" for="invite-combined-input">Invite Link or Code (ID.SECRET):</label>
+          <div class="code-input-row">
+            <input type="text" id="invite-combined-input" placeholder="e.g. 7K2M9X4B3J.A8W9K2M4P6Q7 or URL" autofocus autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+          </div>
+
+          <div class="manual-code-inputs">
+            <div class="code-field">
+              <label class="input-label" for="room-id-input">Room ID:</label>
+              <input type="text" id="room-id-input" maxlength="16" placeholder="7K2M9X4B3J" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false">
+            </div>
+            <div class="code-field">
+              <label class="input-label" for="room-secret-input">Secret Key (Required):</label>
+              <input type="password" id="room-secret-input" maxlength="32" placeholder="••••••••••••••••" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false">
+            </div>
+          </div>
+          <!-- Hidden fallback input for legacy references -->
+          <input type="hidden" id="room-code-input">
+        </div>
+
+        <div id="join-error-msg" class="join-error-text hidden"></div>
+
+        <div class="modal-actions">
+          <button id="btn-confirm-join" class="water-btn">Join Valley</button>
+          <button id="btn-cancel-join" class="small-btn">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Public Worlds Modal -->
+    <div id="public-worlds-modal" class="modal-overlay hidden">
+      <div class="modal-card modal-wide">
+        <h2>Public Worlds Discovery</h2>
+        <p class="modal-desc">
+          Private P2P Rooms are fully operational! Create a private valley and share your unique 12-character code or instant link with up to 3 friends.<br><br>
+          <em>Public Nostr-based room directory is scheduled for v1.1.</em>
+        </p>
+        <div class="modal-actions">
+          <button id="btn-close-public-rooms" class="small-btn">Back</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Host Departed Modal -->
+    <div id="host-departed-modal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <h2>Valley Session Ended</h2>
+        <p class="modal-desc">
+          The valley host has departed. In host-authoritative peer-to-peer multiplayer, the cooperative session ends when the host leaves.
+        </p>
+        <div class="modal-actions">
+          <button id="btn-host-departed-title" class="menu-btn primary-btn">Return to Title</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pause / Settings Modal -->
+    <div id="pause-modal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <h2>Valley Menu</h2>
+        <div class="menu-options">
+          <button id="btn-resume" class="menu-btn primary-btn">Resume Work</button>
+          <button id="btn-respawn" class="menu-btn secondary-btn">Reset to Checkpoint</button>
+          <div class="settings-group">
+            <label class="setting-item">
+              <span>Sound Effects</span>
+              <input type="checkbox" id="setting-sfx" checked>
+            </label>
+            <label class="setting-item">
+              <span>Ambient Water Audio</span>
+              <input type="checkbox" id="setting-music" checked>
+            </label>
+            <label class="setting-item">
+              <span>Screen Shake</span>
+              <input type="checkbox" id="setting-screenshake" checked>
+            </label>
+          </div>
+          <button id="btn-return-title" class="menu-btn danger-btn">Leave to Title</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Victory Modal -->
+    <div id="victory-modal" class="modal-overlay hidden">
+      <div class="modal-card celebration-card">
+        <div class="victory-icon">🎉 💧 ⚙️</div>
+        <h2>Watermill Restored!</h2>
+        <p class="modal-desc">
+          The ancient sluices have channeled the river to the great waterwheel! The mill spins with vibrant energy, restoring life and irrigation to the entire valley.
+        </p>
+        <div class="victory-stats" id="victory-stats">
+          <div>Time: <span id="stat-time">02:45</span></div>
+          <div>Gates Handled: <span id="stat-gates">3</span></div>
+          <div>Debris Cleared: <span id="stat-debris">2</span></div>
+        </div>
+        <div class="modal-actions">
+          <button id="btn-victory-continue" class="menu-btn water-btn">Continue Exploring</button>
+          <button id="btn-victory-title" class="menu-btn secondary-btn">Return to Title</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Credits Modal -->
+    <div id="credits-modal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <h2>Rillkeepers Credits</h2>
+        <div class="credits-body">
+          <p><strong>Design &amp; Architecture:</strong> Lead Game Engineer</p>
+          <p><strong>Visual Foundation:</strong> Handcrafted 16&times;16 Pixel Art &amp; Kenney CC0</p>
+          <p><strong>Audio Engine:</strong> Custom Web Audio Procedural Synthesizer</p>
+          <p><strong>Networking:</strong> Serverless WebRTC DataChannels + Nostr Signaling (Trystero P2P)</p>
+          <p><strong>License:</strong> MIT &bull; Full details in <code>ASSET_LICENSES.md</code></p>
+        </div>
+        <div class="modal-actions">
+          <button id="btn-close-credits" class="small-btn">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Virtual Controls -->
+    <div id="touch-controls" class="touch-controls hidden">
+      <div id="virtual-dpad" class="virtual-dpad">
+        <div class="dpad-btn dpad-up" data-dir="up">&uarr;</div>
+        <div class="dpad-btn dpad-left" data-dir="left">&larr;</div>
+        <div class="dpad-btn dpad-center"></div>
+        <div class="dpad-btn dpad-right" data-dir="right">&rarr;</div>
+        <div class="dpad-btn dpad-down" data-dir="down">&darr;</div>
+      </div>
+      <div class="virtual-actions">
+        <button id="btn-touch-action" class="touch-btn action-e">E</button>
+        <button id="btn-touch-carry" class="touch-btn action-space">SPACE</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
