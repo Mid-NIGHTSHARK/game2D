@@ -1,9 +1,10 @@
-name: Deploy GitHub Pages
+name: Deploy Multi-Game Arcade to GitHub Pages
 
 on:
   push:
     branches:
       - main
+      - master
   workflow_dispatch:
 
 permissions:
@@ -25,27 +26,54 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 12
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
+          cache: 'pnpm'
 
-      - name: Build Game #1 (powder-and-pickaxe)
+      - name: Install Monorepo Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build Game #1 (Deepvein: Powder & Pickaxe)
         working-directory: ./powder-and-pickaxe
         run: |
           npm install
           npm run build
 
-      - name: Assemble Static Site (_site)
+      - name: Generate Rillkeepers Assets
+        run: pnpm --filter rillkeepers run generate-assets
+
+      - name: Run Rillkeepers Automated Tests
+        run: pnpm test
+
+      - name: Build Arcade Hub and Rillkeepers
+        run: pnpm run build
+
+      - name: Assemble Static Site (dist)
         run: |
-          mkdir -p _site
-          cp index.html _site/index.html
-          cp -r powder-and-pickaxe/dist _site/powder-and-pickaxe
+          mkdir -p dist/powder-and-pickaxe
+          cp -r powder-and-pickaxe/dist/* dist/powder-and-pickaxe/
+
+      - name: Verify Unified Arcade Outputs
+        run: |
+          test -f dist/index.html || { echo "Missing dist/index.html"; exit 1; }
+          test -f dist/powder-and-pickaxe/index.html || { echo "Missing dist/powder-and-pickaxe/index.html"; exit 1; }
+          test -f dist/rillkeepers/index.html || { echo "Missing dist/rillkeepers/index.html"; exit 1; }
+          echo "Build verification passed: dist/index.html, dist/powder-and-pickaxe/index.html, and dist/rillkeepers/index.html all exist."
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./_site
+          path: ./dist
 
       - name: Deploy to GitHub Pages (Actions Source)
         id: deployment
@@ -57,4 +85,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./_site
+          publish_dir: ./dist

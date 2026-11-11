@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Subterranean Arcade Hub | Deepvein Operations</title>
+  <title>2D Arcade Hub | Subterranean & Valley Expeditions</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
 
@@ -18,7 +18,9 @@
       --gold-deep: #df9e28;
       --gold-bright: #f7d060;
       --water-blue: #2d576b;
+      --water-bright: #4fa3d1;
       --gas-green: #5c7a3d;
+      --moss-green: #5a8f60;
       --lantern-amber: #ffaa44;
       --lantern-glow: rgba(255, 170, 68, 0.25);
     }
@@ -122,6 +124,10 @@
       gap: 24px;
     }
 
+    .game-card.water-theme {
+      border-color: #244152;
+    }
+
     @media (max-width: 768px) {
       .game-card {
         grid-template-columns: 1fr;
@@ -160,6 +166,13 @@
       font-size: 9px;
       padding: 4px 6px;
       text-transform: uppercase;
+      z-index: 2;
+    }
+
+    .preview-tag.teal {
+      background: #1e3a47;
+      border-color: #38677d;
+      color: #8ed2f0;
     }
 
     .game-details {
@@ -174,6 +187,11 @@
       color: var(--gold-bright);
       margin-bottom: 8px;
       line-height: 1.4;
+    }
+
+    .game-heading.teal {
+      color: #6fc4e8;
+      text-shadow: 2px 2px 0 #1b3d4f;
     }
 
     .game-synopsis {
@@ -193,9 +211,10 @@
     .tag-pill {
       background: #25242c;
       border: 1px solid var(--slate-light);
-      color: #d1c5b8;
+      padding: 3px 10px;
       font-size: 15px;
-      padding: 2px 8px;
+      letter-spacing: 0.5px;
+      color: #c4b6a9;
     }
 
     .tag-pill.gold {
@@ -205,6 +224,14 @@
     .tag-pill.water {
       border-color: var(--water-blue);
       color: #6fb0cf;
+    }
+    .tag-pill.teal {
+      border-color: #33718f;
+      color: #89d3f5;
+    }
+    .tag-pill.moss {
+      border-color: #3d6e44;
+      color: #88c991;
     }
     .tag-pill.keg {
       border-color: #a84232;
@@ -225,6 +252,10 @@
 
     .controls-spec strong {
       color: var(--lantern-amber);
+    }
+
+    .controls-spec.teal strong {
+      color: #8ed2f0;
     }
 
     .launch-btn {
@@ -257,20 +288,22 @@
       box-shadow: none;
     }
 
-    /* Future Game Slot Placeholder */
-    .coming-card {
-      background: rgba(22, 21, 26, 0.6);
-      border: 2px dashed var(--slate-dark);
-      padding: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      color: #6a6673;
+    .launch-btn.water {
+      background: #254a5c;
+      border-color: #4fa3d1;
+      box-shadow: 0 6px 0 #152b36;
+      color: #e5f6fd;
     }
 
-    .coming-title {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 12px;
+    .launch-btn.water:hover {
+      background: #336177;
+      box-shadow: 0 4px 0 #152b36;
+      transform: translateY(2px);
+    }
+
+    .launch-btn.water:active {
+      transform: translateY(6px);
+      box-shadow: none;
     }
 
     /* Footer */
@@ -299,13 +332,13 @@
 
   <header class="hub-header">
     <div class="hub-title-row">
-      <div class="hub-title">DEEPVEIN EXPEDITIONS</div>
+      <div class="hub-title">2D ARCADE HUB</div>
       <div class="hub-badge">
-        <span>⚙</span> OUTPOST TERMINAL v1.0
+        <span>🎮</span> MULTI-GAME MONOREPO
       </div>
     </div>
     <div class="hub-subtitle">
-      Decentralized Subterranean Multiplayer Operations — WebRTC Peer-to-Peer
+      Decentralized Real-Time 2D Multiplayer Operations &bull; Serverless WebRTC Peer-to-Peer
     </div>
   </header>
 
@@ -353,25 +386,57 @@
       </div>
     </article>
 
-    <!-- Future Expedition Slot -->
-    <div class="coming-card">
-      <div>
-        <div class="coming-title">EXPEDITION #02: CAVERN DRAFT (PENDING GEOLOGICAL SURVEY)</div>
-        <div style="font-size: 15px; margin-top: 4px;">Future games will mount under <code>/game2D/&lt;new-game&gt;/</code>.</div>
+    <!-- Game #2: Rillkeepers -->
+    <article class="game-card water-theme">
+      <div class="preview-box">
+        <span class="preview-tag teal">EXPEDITION #02</span>
+        <canvas id="rillkeepers-canvas" class="preview-canvas" width="160" height="120"></canvas>
       </div>
-      <div style="font-family: 'Press Start 2P', monospace; font-size: 10px;">LOCKED</div>
-    </div>
+
+      <div class="game-details">
+        <div>
+          <h2 class="game-heading teal">RILLKEEPERS: WATERWORKS</h2>
+          <p class="game-synopsis">
+            Cooperative 2D hydraulic puzzle & environmental restoration. Traverse the lush valley of Elderbrook, operate sluice gates, clear river debris, channel rushing currents into irrigation trenches, and restore the ancient mountain waterwheel with up to 4 keepers over WebRTC P2P.
+          </p>
+
+          <div class="tags-row">
+            <span class="tag-pill teal">1-4 Players Peer-to-Peer</span>
+            <span class="tag-pill water">Co-op Hydro-Physics</span>
+            <span class="tag-pill moss">Cellular Water Graph</span>
+            <span class="tag-pill teal">Hydraulic Sluice Gates</span>
+            <span class="tag-pill water">Host-Authoritative</span>
+            <span class="tag-pill teal">Zero Backend / Static</span>
+          </div>
+
+          <div class="controls-spec teal">
+            <div><strong>W/A/S/D / Arrows:</strong> Move Keeper</div>
+            <div><strong>E / Space:</strong> Operate Sluice Gate</div>
+            <div><strong>Space:</strong> Pick Up / Clear Debris</div>
+            <div><strong>Esc:</strong> Room Menu & Invite</div>
+            <div><strong>1 - 4:</strong> Valley Keepers</div>
+          </div>
+        </div>
+
+        <div>
+          <a class="launch-btn water" href="./rillkeepers/">
+            <span>🌊</span> Launch Waterworks
+          </a>
+        </div>
+      </div>
+    </article>
   </main>
 
   <footer class="hub-footer">
     <div>Repository: <a href="https://github.com/Mid-NIGHTSHARK/game2D" target="_blank">github.com/Mid-NIGHTSHARK/game2D</a></div>
-    <div>License: CC0 1.0 Universal Public Domain</div>
+    <div>2D Multi-Game Arcade &bull; License: CC0 1.0 Universal Public Domain</div>
   </footer>
 
   <script>
-    // Grounded animated retro canvas preview showing animated miner, gold crate, and sparking powder keg
+    // 1. Deepvein Animated Preview
     (function() {
       const cvs = document.getElementById('preview-canvas');
+      if (!cvs) return;
       const ctx = cvs.getContext('2d');
       let tick = 0;
 
@@ -429,17 +494,14 @@
         const runFrame = Math.floor(tick / 8) % 4;
         const minerX = 45;
         const minerY = 56;
-        // Boots
         ctx.fillStyle = '#222';
         ctx.fillRect(minerX + (runFrame === 1 ? 2 : 0), minerY + 12, 4, 4);
         ctx.fillRect(minerX + 6 + (runFrame === 3 ? -2 : 0), minerY + 12, 4, 4);
-        // Tunic (Red Crew)
         ctx.fillStyle = '#8a3324';
         ctx.fillRect(minerX + 1, minerY + 5, 8, 7);
-        // Head / Helmet
-        ctx.fillStyle = '#df9e28'; // brass hardhat
+        ctx.fillStyle = '#df9e28';
         ctx.fillRect(minerX + 1, minerY, 8, 4);
-        ctx.fillStyle = '#ffaa44'; // headlamp
+        ctx.fillStyle = '#ffaa44';
         ctx.fillRect(minerX + 8, minerY + 1, 2, 2);
 
         // Pickaxe in hand
@@ -467,7 +529,6 @@
         ctx.fillStyle = '#1c1b20';
         ctx.fillRect(kegX, kegY + 2, 10, 2);
         ctx.fillRect(kegX, kegY + 6, 10, 2);
-        // Fuse spark
         if (tick % 2 === 0) {
           ctx.fillStyle = '#f7d060';
           ctx.fillRect(kegX + 4, kegY - 4, 3, 3);
@@ -479,7 +540,117 @@
       }
       draw();
     })();
+
+    // 2. Rillkeepers Animated Preview (Flowing River & Waterwheel)
+    (function() {
+      const cvs = document.getElementById('rillkeepers-canvas');
+      if (!cvs) return;
+      const ctx = cvs.getContext('2d');
+      let tick = 0;
+
+      function draw() {
+        tick++;
+        // Valley green backdrop
+        ctx.fillStyle = '#16231b';
+        ctx.fillRect(0, 0, cvs.width, cvs.height);
+
+        // Valley grass textures
+        ctx.fillStyle = '#1f3326';
+        ctx.fillRect(0, 0, cvs.width, 36);
+        ctx.fillRect(0, 84, cvs.width, 36);
+
+        // River canal banks
+        ctx.fillStyle = '#3a4b3d';
+        ctx.fillRect(0, 36, cvs.width, 4);
+        ctx.fillRect(0, 80, cvs.width, 4);
+
+        // Flowing Water Channel
+        ctx.fillStyle = '#1c4254';
+        ctx.fillRect(0, 40, cvs.width, 40);
+
+        // Water current ripples
+        ctx.fillStyle = '#347291';
+        for (let x = -20; x < cvs.width; x += 32) {
+          const waveX = (x + (tick * 1.5)) % (cvs.width + 30);
+          ctx.fillRect(waveX, 48, 14, 2);
+          ctx.fillRect(waveX + 10, 62, 18, 2);
+        }
+        ctx.fillStyle = '#65b2d6';
+        for (let x = -10; x < cvs.width; x += 40) {
+          const waveX = (x + (tick * 2)) % (cvs.width + 40);
+          ctx.fillRect(waveX, 54, 8, 2);
+          ctx.fillRect(waveX + 6, 70, 10, 2);
+        }
+
+        // Sluice Gate
+        ctx.fillStyle = '#5c4533';
+        ctx.fillRect(55, 34, 10, 52);
+        ctx.fillStyle = '#8f6f53';
+        ctx.fillRect(57, 36, 6, 48);
+        ctx.fillStyle = '#b58d3d';
+        ctx.fillRect(56, 30, 8, 5); // brass wheel on top
+
+        // Animated Waterwheel (spinning)
+        const wheelX = 118;
+        const wheelY = 60;
+        const radius = 22;
+        const angle = tick * 0.04;
+
+        ctx.strokeStyle = '#4a3728';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.arc(wheelX, wheelY, radius, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.strokeStyle = '#8f6f53';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(wheelX, wheelY, radius - 4, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Wheel paddles
+        for (let p = 0; p < 6; p++) {
+          const a = angle + (p * Math.PI / 3);
+          const px = wheelX + Math.cos(a) * radius;
+          const py = wheelY + Math.sin(a) * radius;
+          ctx.strokeStyle = '#a68263';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(wheelX, wheelY);
+          ctx.lineTo(px, py);
+          ctx.stroke();
+        }
+
+        // Wheel axle
+        ctx.fillStyle = '#222';
+        ctx.beginPath();
+        ctx.arc(wheelX, wheelY, 4, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Water splash around wheel
+        if (tick % 3 === 0) {
+          ctx.fillStyle = '#b3e5fc';
+          ctx.fillRect(wheelX + 16 + Math.random() * 6, wheelY + 8 + Math.random() * 6, 2, 2);
+          ctx.fillRect(wheelX - 12 + Math.random() * 6, wheelY + 12 + Math.random() * 4, 2, 2);
+        }
+
+        // Keeper Rowan sprite
+        const kX = 26;
+        const kY = 62;
+        ctx.fillStyle = '#2d5a42'; // green tunic
+        ctx.fillRect(kX, kY + 4, 8, 8);
+        ctx.fillStyle = '#d4a373'; // face
+        ctx.fillRect(kX + 1, kY, 6, 5);
+        ctx.fillStyle = '#8f563b'; // boots
+        ctx.fillRect(kX, kY + 12, 3, 3);
+        ctx.fillRect(kX + 5, kY + 12, 3, 3);
+        ctx.fillStyle = '#4fa3d1'; // water droplet icon
+        ctx.fillRect(kX + 2, kY + 6, 4, 4);
+
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
   </script>
 </body>
 </html>
-
