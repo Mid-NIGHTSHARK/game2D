@@ -78,3 +78,4 @@ npm run preview
 ## 📜 License & Credits
 
 All code, procedural pixel art matrices, and WebAudio synthesizer scripts are dedicated to the public domain under [CC0 1.0 Universal](./CREDITS.md).
+

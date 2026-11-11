@@ -202,3 +202,4 @@ export class LightingEngine {
     (phaserTexture as unknown as { update: () => void }).update?.();
   }
 }
+

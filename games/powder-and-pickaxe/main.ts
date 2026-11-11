@@ -192,3 +192,4 @@ class ExpeditionApp {
 window.addEventListener('DOMContentLoaded', () => {
   new ExpeditionApp();
 });
+

@@ -13,3 +13,4 @@ To the extent possible under law, the authors have dedicated all copyright and r
 - **Audio Synthesis:** Real-time WebAudio procedural synthesis implementing mechanical pickaxe transients, low-pass explosive rumble cavities, water ripple oscillations, and fuse fizz noise generators. Zero external sound assets or binary bloat.
 - **Networking:** Peer-to-peer WebRTC via Trystero (Nostr + BroadcastChannel) for serverless real-time multiplayer synchronization.
 - **Engine / Framework:** Phaser 3 and Vite.
+

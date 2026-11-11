@@ -841,3 +841,4 @@ export class PixelAtlasGenerator {
     ];
   }
 }
+
