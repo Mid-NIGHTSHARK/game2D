@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subterranean Arcade Hub | Deepvein Operations</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+    :root {
+      --basalt-deep: #141316;
+      --basalt-mid: #1c1b20;
+      --slate-dark: #3b3a42;
+      --slate-light: #52505c;
+      --timber-dark: #663931;
+      --timber-mid: #8f563b;
+      --ochre-dirt: #734c36;
+      --gold-deep: #df9e28;
+      --gold-bright: #f7d060;
+      --water-blue: #2d576b;
+      --gas-green: #5c7a3d;
+      --lantern-amber: #ffaa44;
+      --lantern-glow: rgba(255, 170, 68, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--basalt-deep);
+      color: #d8cbbb;
+      font-family: 'VT323', monospace;
+      font-size: 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px;
+      background-image: 
+        radial-gradient(circle at 50% 20%, rgba(255, 170, 68, 0.08) 0%, transparent 60%),
+        repeating-linear-gradient(45deg, #141316 0, #141316 12px, #18171c 12px, #18171c 24px);
+    }
+
+    /* Industrial Riveted Header */
+    .hub-header {
+      width: 100%;
+      max-width: 960px;
+      background: var(--basalt-mid);
+      border: 4px solid var(--slate-dark);
+      box-shadow: 0 8px 0 #0d0c0e, inset 0 0 16px rgba(0, 0, 0, 0.8);
+      padding: 20px 24px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .hub-header::before, .hub-header::after {
+      content: '●';
+      position: absolute;
+      color: var(--slate-light);
+      font-size: 14px;
+      top: 6px;
+    }
+    .hub-header::before { left: 8px; }
+    .hub-header::after { right: 8px; }
+
+    .hub-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .hub-title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 20px;
+      color: var(--gold-bright);
+      text-shadow: 2px 2px 0 #523410;
+      letter-spacing: 1px;
+    }
+
+    .hub-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #24222a;
+      border: 2px solid var(--timber-mid);
+      color: var(--lantern-amber);
+      padding: 4px 12px;
+      font-size: 16px;
+      letter-spacing: 1px;
+    }
+
+    .hub-subtitle {
+      color: #9c8e82;
+      margin-top: 8px;
+      font-size: 18px;
+    }
+
+    /* Game Catalog Grid */
+    .game-grid {
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Featured Game Card */
+    .game-card {
+      background: #1a191f;
+      border: 4px solid var(--timber-dark);
+      box-shadow: 0 10px 0 #0c0b0e, 0 0 30px rgba(0, 0, 0, 0.7);
+      padding: 24px;
+      position: relative;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .game-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .preview-box {
+      background: #111013;
+      border: 3px solid var(--slate-dark);
+      aspect-ratio: 4/3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 20px #000;
+    }
+
+    .preview-canvas {
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .preview-tag {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: var(--timber-dark);
+      border: 1px solid var(--timber-mid);
+      color: var(--gold-bright);
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9px;
+      padding: 4px 6px;
+      text-transform: uppercase;
+    }
+
+    .game-details {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .game-heading {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 18px;
+      color: var(--gold-bright);
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .game-synopsis {
+      color: #bfaea0;
+      font-size: 19px;
+      line-height: 1.35;
+      margin-bottom: 16px;
+    }
+
+    .tags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .tag-pill {
+      background: #25242c;
+      border: 1px solid var(--slate-light);
+      color: #d1c5b8;
+      font-size: 15px;
+      padding: 2px 8px;
+    }
+
+    .tag-pill.gold {
+      border-color: var(--gold-deep);
+      color: var(--gold-bright);
+    }
+    .tag-pill.water {
+      border-color: var(--water-blue);
+      color: #6fb0cf;
+    }
+    .tag-pill.keg {
+      border-color: #a84232;
+      color: #f77d6d;
+    }
+
+    .controls-spec {
+      background: #141316;
+      border: 2px dashed var(--slate-dark);
+      padding: 10px 14px;
+      margin-bottom: 20px;
+      font-size: 16px;
+      color: #ab9e92;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 8px;
+    }
+
+    .controls-spec strong {
+      color: var(--lantern-amber);
+    }
+
+    .launch-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: var(--timber-mid);
+      color: #fff4e0;
+      border: 3px solid #b3734a;
+      box-shadow: 0 6px 0 var(--timber-dark);
+      padding: 14px 28px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 14px;
+      text-decoration: none;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.1s ease-in-out;
+    }
+
+    .launch-btn:hover {
+      background: #a36445;
+      box-shadow: 0 4px 0 var(--timber-dark);
+      transform: translateY(2px);
+    }
+
+    .launch-btn:active {
+      transform: translateY(6px);
+      box-shadow: none;
+    }
+
+    /* Future Game Slot Placeholder */
+    .coming-card {
+      background: rgba(22, 21, 26, 0.6);
+      border: 2px dashed var(--slate-dark);
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #6a6673;
+    }
+
+    .coming-title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 12px;
+    }
+
+    /* Footer */
+    .hub-footer {
+      width: 100%;
+      max-width: 960px;
+      margin-top: 32px;
+      text-align: center;
+      color: #6c6670;
+      font-size: 16px;
+      border-top: 2px solid var(--slate-dark);
+      padding-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .hub-footer a {
+      color: var(--gold-deep);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="hub-header">
+    <div class="hub-title-row">
+      <div class="hub-title">DEEPVEIN EXPEDITIONS</div>
+      <div class="hub-badge">
+        <span>⚙</span> OUTPOST TERMINAL v1.0
+      </div>
+    </div>
+    <div class="hub-subtitle">
+      Decentralized Subterranean Multiplayer Operations — WebRTC Peer-to-Peer
+    </div>
+  </header>
+
+  <main class="game-grid">
+    <!-- Game #1: Deepvein: Powder & Pickaxe -->
+    <article class="game-card">
+      <div class="preview-box">
+        <span class="preview-tag">EXPEDITION #01</span>
+        <canvas id="preview-canvas" class="preview-canvas" width="160" height="120"></canvas>
+      </div>
+
+      <div class="game-details">
+        <div>
+          <h2 class="game-heading">DEEPVEIN: POWDER & PICKAXE</h2>
+          <p class="game-synopsis">
+            Tactical 2D subterranean extraction & sabotage. Delve into fully destructible 72x72 seeded granite caverns. Swing heavy pickaxes, blast veins with sparking powder kegs, outsmart cellular water floods, shutter your lantern for darkness stealth, and haul 5 Gold Bullion Crates back to your Minecart before rival sappers blow you to bedrock!
+          </p>
+
+          <div class="tags-row">
+            <span class="tag-pill gold">2-8 Players Peer-to-Peer</span>
+            <span class="tag-pill">Crew vs. Crew</span>
+            <span class="tag-pill">Free-For-All</span>
+            <span class="tag-pill keg">Rival AI Sappers</span>
+            <span class="tag-pill water">Cellular Flooding</span>
+            <span class="tag-pill gold">CC0 Asset Engine</span>
+          </div>
+
+          <div class="controls-spec">
+            <div><strong>W/A/S/D:</strong> Move Miner</div>
+            <div><strong>Mouse:</strong> Aim Angle</div>
+            <div><strong>L-Click:</strong> Pickaxe / Pistol</div>
+            <div><strong>1 / 2:</strong> Switch Tools</div>
+            <div><strong>E:</strong> Hoist / Throw Crate</div>
+            <div><strong>Q / R-Click:</strong> Light Fuse (4s)</div>
+            <div><strong>F:</strong> Shutter Lantern</div>
+            <div><strong>Tab:</strong> Team Scoreboard</div>
+          </div>
+        </div>
+
+        <div>
+          <a class="launch-btn" href="./powder-and-pickaxe/">
+            <span>⛏</span> Launch Expedition
+          </a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Future Expedition Slot -->
+    <div class="coming-card">
+      <div>
+        <div class="coming-title">EXPEDITION #02: CAVERN DRAFT (PENDING GEOLOGICAL SURVEY)</div>
+        <div style="font-size: 15px; margin-top: 4px;">Future games will mount under <code>/game2D/&lt;new-game&gt;/</code>.</div>
+      </div>
+      <div style="font-family: 'Press Start 2P', monospace; font-size: 10px;">LOCKED</div>
+    </div>
+  </main>
+
+  <footer class="hub-footer">
+    <div>Repository: <a href="https://github.com/Mid-NIGHTSHARK/game2D" target="_blank">github.com/Mid-NIGHTSHARK/game2D</a></div>
+    <div>License: CC0 1.0 Universal Public Domain</div>
+  </footer>
+
+  <script>
+    // Grounded animated retro canvas preview showing animated miner, gold crate, and sparking powder keg
+    (function() {
+      const cvs = document.getElementById('preview-canvas');
+      const ctx = cvs.getContext('2d');
+      let tick = 0;
+
+      function draw() {
+        tick++;
+        ctx.fillStyle = '#141316';
+        ctx.fillRect(0, 0, cvs.width, cvs.height);
+
+        // Ground stone tiles
+        for (let x = 0; x < cvs.width; x += 16) {
+          for (let y = 0; y < cvs.height; y += 16) {
+            if (y > 70) {
+              ctx.fillStyle = ((x / 16 + y / 16) % 2 === 0) ? '#3b3a42' : '#323138';
+              ctx.fillRect(x, y, 16, 16);
+            }
+          }
+        }
+
+        // Timber supports
+        ctx.fillStyle = '#663931';
+        ctx.fillRect(20, 20, 8, 55);
+        ctx.fillRect(130, 20, 8, 55);
+        ctx.fillRect(16, 16, 126, 8);
+        ctx.fillStyle = '#8f563b';
+        ctx.fillRect(22, 22, 4, 51);
+        ctx.fillRect(132, 22, 4, 51);
+        ctx.fillRect(18, 18, 122, 4);
+
+        // Warm amber lantern swinging
+        const sway = Math.sin(tick * 0.05) * 4;
+        const lanternX = 75 + sway;
+        const lanternY = 24;
+        ctx.strokeStyle = '#52505c';
+        ctx.beginPath();
+        ctx.moveTo(75, 24);
+        ctx.lineTo(lanternX, lanternY + 12);
+        ctx.stroke();
+
+        // Lantern Glow
+        const grad = ctx.createRadialGradient(lanternX, lanternY + 16, 2, lanternX, lanternY + 16, 50);
+        grad.addColorStop(0, 'rgba(255, 170, 68, 0.4)');
+        grad.addColorStop(1, 'rgba(255, 170, 68, 0)');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(lanternX, lanternY + 16, 50, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Lantern body
+        ctx.fillStyle = '#df9e28';
+        ctx.fillRect(lanternX - 3, lanternY + 12, 6, 8);
+        ctx.fillStyle = '#fffae0';
+        ctx.fillRect(lanternX - 1, lanternY + 14, 2, 4);
+
+        // Miner sprite (Red Crew)
+        const runFrame = Math.floor(tick / 8) % 4;
+        const minerX = 45;
+        const minerY = 56;
+        // Boots
+        ctx.fillStyle = '#222';
+        ctx.fillRect(minerX + (runFrame === 1 ? 2 : 0), minerY + 12, 4, 4);
+        ctx.fillRect(minerX + 6 + (runFrame === 3 ? -2 : 0), minerY + 12, 4, 4);
+        // Tunic (Red Crew)
+        ctx.fillStyle = '#8a3324';
+        ctx.fillRect(minerX + 1, minerY + 5, 8, 7);
+        // Head / Helmet
+        ctx.fillStyle = '#df9e28'; // brass hardhat
+        ctx.fillRect(minerX + 1, minerY, 8, 4);
+        ctx.fillStyle = '#ffaa44'; // headlamp
+        ctx.fillRect(minerX + 8, minerY + 1, 2, 2);
+
+        // Pickaxe in hand
+        const swing = Math.sin(tick * 0.1) * 0.3;
+        ctx.fillStyle = '#52505c';
+        ctx.fillRect(minerX + 10, minerY + 4 + (swing * 4), 6, 2);
+        ctx.fillStyle = '#9c8e82';
+        ctx.fillRect(minerX + 15, minerY + 2 + (swing * 4), 3, 6);
+
+        // Gold Bullion Crate
+        const crateX = 95;
+        const crateY = 60;
+        ctx.fillStyle = '#8f563b';
+        ctx.fillRect(crateX, crateY, 14, 12);
+        ctx.fillStyle = '#663931';
+        ctx.strokeRect(crateX + 0.5, crateY + 0.5, 13, 11);
+        ctx.fillStyle = '#f7d060';
+        ctx.fillRect(crateX + 4, crateY + 3, 6, 6);
+
+        // Powder Keg with sparking fuse
+        const kegX = 115;
+        const kegY = 62;
+        ctx.fillStyle = '#5c2d22';
+        ctx.fillRect(kegX, kegY, 10, 10);
+        ctx.fillStyle = '#1c1b20';
+        ctx.fillRect(kegX, kegY + 2, 10, 2);
+        ctx.fillRect(kegX, kegY + 6, 10, 2);
+        // Fuse spark
+        if (tick % 2 === 0) {
+          ctx.fillStyle = '#f7d060';
+          ctx.fillRect(kegX + 4, kegY - 4, 3, 3);
+          ctx.fillStyle = '#ffaa44';
+          ctx.fillRect(kegX + 5, kegY - 6, 2, 2);
+        }
+
+        requestAnimationFrame(draw);
+      }
+      draw();
+    })();
+  </script>
+</body>
+</html>
+
